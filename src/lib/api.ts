@@ -166,4 +166,40 @@ export async function getBands(token: string, params?: { page?: number; page_siz
   return http<{ data: any[]; pagination: any }>(`/api/bands${qs ? `?${qs}` : ""}`, { authToken: token });
 }
 
+// Device Tokens (Auth)
+export async function registerDeviceToken(authToken: string, body: { token: string; platform: "ios" | "android" | "web" }) {
+  const res = await fetch(`/api/device-tokens/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string; token_id: number };
+}
+export async function unregisterDeviceToken(authToken: string, body: { token: string }) {
+  const res = await fetch(`/api/device-tokens/unregister`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string };
+}
+export async function clearDeviceTokens(authToken: string) {
+  const res = await fetch(`/api/device-tokens/clear`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string };
+}
+
 
