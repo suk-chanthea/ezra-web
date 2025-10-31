@@ -11,7 +11,7 @@ export async function http<TResponse = unknown, TBody = unknown>(
   path: string,
   options: HttpOptions<TBody> = {}
 ): Promise<TResponse> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8088";
   const { method = "GET", body, authToken, headers = {} } = options;
 
   const res = await fetch(`${baseUrl}${path}`, {

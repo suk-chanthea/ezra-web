@@ -58,7 +58,7 @@ export default function RegisterPage() {
   return (
     <main style={{ padding: 24 }}>
       <h1 style={{ fontSize: 24, fontWeight: 700 }}>Register</h1>
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12, maxWidth: 420, marginTop: 16 }}>
+      <form method="post" onSubmit={onSubmit} style={{ display: "grid", gap: 12, maxWidth: 420, marginTop: 16 }}>
         <input
           type="text"
           placeholder="Username"

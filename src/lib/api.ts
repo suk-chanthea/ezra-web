@@ -4,7 +4,13 @@ import { http } from "@/lib/http";
 export type LoginRequest = { username: string; password: string; otp_code?: string };
 export type LoginResponse = { token: string };
 export async function login(body: LoginRequest) {
-  return http<LoginResponse, LoginRequest>("/login", { method: "POST", body });
+  const res = await fetch(`/api/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as LoginResponse;
 }
 
 export type RegisterRequest = {
@@ -15,7 +21,13 @@ export type RegisterRequest = {
   otp_code: string;
 };
 export async function register(body: RegisterRequest) {
-  return http<{ message: string; token: string }, RegisterRequest>("/register", { method: "POST", body });
+  const res = await fetch(`/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string; token: string };
 }
 
 export async function logout(token: string) {
@@ -24,16 +36,22 @@ export async function logout(token: string) {
 
 // OTP
 export async function otpSend(body: { email: string; purpose: "email_verification" | "password_reset" | "login" }) {
-  return http<{ message: string; email: string; expires_at: string }, typeof body>("/otp/send", {
+  const res = await fetch(`/api/otp/send`, {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string; email: string; expires_at: string };
 }
 export async function otpVerify(body: { email: string; code: string; purpose: string }) {
-  return http<{ message: string; data: { email: string; purpose: string } }, typeof body>("/otp/verify", {
+  const res = await fetch(`/api/otp/verify`, {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
+  if (!res.ok) throw new Error(((await res.json()) as any)?.error || res.statusText);
+  return (await res.json()) as { message: string; data: { email: string; purpose: string } };
 }
 
 // Supporters (Public)
