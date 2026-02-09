@@ -2,6 +2,8 @@
 
 import React, { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Sidebar from "@/components/Sidebar";
+import TopNavbar from "@/components/TopNavbar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -16,23 +18,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [pathname, router]);
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", minHeight: "100vh" }}>
-      <aside style={{ borderRight: "1px solid #eee", padding: 16 }}>
-        <div style={{ fontWeight: 700, marginBottom: 12 }}>Dashboard</div>
-        <nav style={{ display: "grid", gap: 8 }}>
-          <a href="/dashboard">Home</a>
-          <a href="/dashboard/account">Account</a>
-          <a href="/dashboard/church">Church</a>
-          <a href="/dashboard/bands">Band</a>
-          <a href="/dashboard/events">Event</a>
-          <a href="/dashboard/musics">Music</a>
-          <a href="/dashboard/music-sheets">Music Sheet</a>
-          <a href="/dashboard/music-audio">Music Audio</a>
-          <a href="/dashboard/supporters">Supporter</a>
-          <a href="/dashboard/donations">Donation</a>
-        </nav>
-      </aside>
-      <section>{children}</section>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+        <TopNavbar />
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

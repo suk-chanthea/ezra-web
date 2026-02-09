@@ -16,16 +16,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setTokenState] = useState<string | null>(null);
 
   useEffect(() => {
-    const t = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (t) setTokenState(t);
+    // Load token from localStorage after hydration
+    const t = localStorage.getItem("token");
+    setTokenState(t);
   }, []);
 
   const setToken = useCallback((t: string | null) => {
     setTokenState(t);
-    if (typeof window !== "undefined") {
-      if (t) localStorage.setItem("token", t);
-      else localStorage.removeItem("token");
-    }
+    if (t) localStorage.setItem("token", t);
+    else localStorage.removeItem("token");
   }, []);
 
   const logout = useCallback(() => {

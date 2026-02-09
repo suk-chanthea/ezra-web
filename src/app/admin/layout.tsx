@@ -2,6 +2,8 @@
 
 import React, { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import AdminSidebar from "@/components/AdminSidebar";
+import TopNavbar from "@/components/TopNavbar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -16,23 +18,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathname, router]);
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", minHeight: "100vh" }}>
-      <aside style={{ borderRight: "1px solid #eee", padding: 16 }}>
-        <div style={{ fontWeight: 700, marginBottom: 12 }}>Admin</div>
-        <nav style={{ display: "grid", gap: 8 }}>
-          <a href="/admin">Home</a>
-          <a href="/admin/account">Account</a>
-          <a href="/admin/church">Church</a>
-          <a href="/admin/bands">Band</a>
-          <a href="/admin/events">Event</a>
-          <a href="/admin/musics">Music</a>
-          <a href="/admin/music-sheets">Music Sheet</a>
-          <a href="/admin/music-audio">Music Audio</a>
-          <a href="/admin/supporters">Supporter</a>
-          <a href="/admin/donations">Donation</a>
-        </nav>
-      </aside>
-      <section>{children}</section>
+    <div className="admin-root flex min-h-screen">
+      <AdminSidebar />
+      <div className="admin-shell flex-1 flex flex-col min-w-0">
+        <TopNavbar />
+        <main className="flex-1 overflow-y-auto admin-scrollable">
+          <div className="admin-page">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
